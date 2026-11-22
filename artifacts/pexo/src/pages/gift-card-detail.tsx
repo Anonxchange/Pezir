@@ -1,4 +1,5 @@
 import { useHead } from "@unhead/react";
+import { buildCanonicalUrl } from "@/lib/site-document";
 import { useState, useEffect } from "react";
 import { useLocation, useRoute } from "wouter";
 import { useAuth } from "@/lib/auth-context";
@@ -255,17 +256,6 @@ function RelatedGiftCards({
 }
 
 export function GiftCardDetail() {
-  useHead({
-    title: "Gift Card | Pexly",
-    meta: [{ name: "description", content: "View and purchase this digital gift card with cryptocurrency. Instant delivery after payment." }],
-    // TrustBox script: loads the Trustpilot widget runtime once for the page.
-    script: [
-      {
-        src: "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js",
-        async: true,
-      },
-    ],
-  });
 
   // Trustpilot config comes from env vars — never hardcode a business's
   // review identifiers in source. The widget section simply doesn't render
@@ -290,6 +280,34 @@ export function GiftCardDetail() {
 
   const cardId = params?.id;
   const { data: card, isLoading, error } = useGiftCardProduct(cardId);
+  const cardCanonical = buildCanonicalUrl(cardId ? `/gift-cards/${encodeURIComponent(cardId)}` : "/gift-cards");
+  const cardTitle = card?.productName ? `${card.productName} Gift Card | Pexly` : "Digital Gift Card | Pexly";
+  const cardDescription = card?.productName
+    ? `Buy a ${card.productName} digital gift card using cryptocurrency on Pexly. Pay directly from your own wallet with instant email delivery.`
+    : "Buy digital gift cards directly with cryptocurrency from your own wallet on Pexly and receive instant digital delivery after payment.";
+  const cardImage = sanitizeImageUrl(card?.logoUrls?.[0]) || undefined;
+
+  useHead({
+    title: cardTitle,
+    meta: [
+      { name: "description", content: cardDescription },
+      { property: "og:title", content: cardTitle },
+      { property: "og:description", content: cardDescription },
+      { property: "og:url", content: cardCanonical },
+      ...(cardImage ? [{ property: "og:image", content: cardImage }] : []),
+      { name: "twitter:title", content: cardTitle },
+      { name: "twitter:description", content: cardDescription },
+      ...(cardImage ? [{ name: "twitter:image", content: cardImage }] : []),
+    ],
+    link: [{ rel: "canonical", key: "canonical", href: cardCanonical }],
+    // TrustBox script: loads the Trustpilot widget runtime once for the page.
+    script: [
+      {
+        src: "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js",
+        async: true,
+      },
+    ],
+  });
   const {
     data: relatedProductsData,
     isLoading: relatedProductsLoading,
