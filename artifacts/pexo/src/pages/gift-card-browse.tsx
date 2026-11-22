@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useGiftCardProducts, useGiftCardCategories, useGiftCardCountries } from "@/hooks/use-reloadly";
 import { mapProducts, ProductCardGrid } from "@/components/gift-card-browse-cards";
-import { useDigitalCountry } from "@/lib/country-preferences";
+import { useCountryPreferences } from "@/lib/country-preferences";
 
 // ── Sidebar (shared with main page, but locally defined here to avoid circular imports) ──
 const STATIC_SIDEBAR = [
@@ -77,7 +77,10 @@ export function GiftCardBrowse() {
   const [sortOpen,     setSortOpen]       = useState(false);
   const [sortBy,       setSortBy]         = useState("Popular");
   const [page,         setPage]           = useState(1);
-  const countryCode = useDigitalCountry();
+  const { digital } = useCountryPreferences();
+  const countryCode = digital?.country;
+  const allCountries = digital?.source === "manual" && !countryCode;
+  const hasSelection = Boolean(countryCode || allCountries);
   const [accumulated,  setAccumulated]    = useState<import("@/hooks/use-reloadly").ReloadlyProduct[]>([]);
 
   const canonical = buildCanonicalUrl("/gift-cards/browse");
@@ -110,7 +113,7 @@ export function GiftCardBrowse() {
     categoryId,
     productName: searchQuery || undefined,
     countryCode,
-    enabled: !!countryCode,
+    enabled: hasSelection,
   });
 
   useEffect(() => {

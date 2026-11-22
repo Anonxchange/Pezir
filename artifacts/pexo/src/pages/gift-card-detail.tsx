@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useLocation, useRoute } from "wouter";
 import { useAuth } from "@/lib/auth-context";
 import {
-  ArrowLeft,
   Wallet,
   Building2,
   ShoppingCart,
@@ -313,8 +312,7 @@ export function GiftCardDetail() {
     isLoading: relatedProductsLoading,
   } = useGiftCardProducts({ page: 1, size: 200 });
   const { mutate: createOrder, isPending: isOrdering } = useCreateGiftCardOrder();
-  const { items: cartItems, addToCart, isLoading: isAddingToCart } = useGiftCardCart();
-  const cartCount = cartItems.reduce((acc, i) => acc + i.quantity, 0);
+  const { addToCart, isLoading: isAddingToCart } = useGiftCardCart();
   const [cartOpen, setCartOpen] = useState(false);
 
   const [valueTouched, setValueTouched] = useState(false);
@@ -452,30 +450,6 @@ export function GiftCardDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top nav bar */}
-      <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border/60">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-          <button
-            onClick={() => setLocation("/gift-cards")}
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Gift Cards
-          </button>
-          <button
-            onClick={() => setCartOpen(true)}
-            className="relative p-2 hover:bg-secondary rounded-lg transition-colors"
-          >
-            <ShoppingCart className="h-5 w-5" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </button>
-        </div>
-      </div>
-
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_420px] gap-6 lg:gap-8">
 

@@ -799,7 +799,9 @@ function JustInRail({ list, loading }: { list: RailProduct[]; loading: boolean }
 
 export function PhysicalProductsExport() {
   const [category, setCategory] = useState("");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(() =>
+    typeof window !== "undefined" ? (new URLSearchParams(window.location.search).get("q") ?? "").trim() : "",
+  );
   const rail = useJustIn();
   const justIn = rail.items;
   return (
