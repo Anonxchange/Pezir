@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "outputDirectory": "artifacts/pexo/dist/public",
+  "images": {
+    "sizes": [256, 384, 600, 1000, 1200, 1920],
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "hvpeycnedmzrjshmvgri.supabase.co",
+        "pathname": "/storage/v1/object/public/**"
+      },
+      {
+        "protocol": "https",
+        "hostname": "www.pexly.app",
+        "pathname": "/**"
+      }
+    ],
+    "formats": ["image/avif", "image/webp"],
+    "minimumCacheTTL": 31536000
+  },
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://www.pexly.app/support",
+      "has": [{ "type": "host", "value": "help.pexly.app" }],
+      "permanent": false
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://www.pexly.app/signin",
+      "has": [{ "type": "host", "value": "auth.pexly.app" }],
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap-products.xml",
+      "destination": "https://hvpeycnedmzrjshmvgri.supabase.co/functions/v1/sitemap-products"
+    },
+    {
+      "source": "/sitemap-products",
+      "destination": "https://hvpeycnedmzrjshmvgri.supabase.co/functions/v1/sitemap-products"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(?:ico|png|jpe?g|gif|svg|webp|avif))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
+}
