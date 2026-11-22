@@ -1,0 +1,37 @@
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npm run dev --workspace=@workspace/pexo",
+    "build": "npm run typecheck && npm run build --workspace=@workspace/pexo",
+    "lint": "npm run typecheck",
+    "typecheck": "npm run typecheck --workspace=@workspace/pexo"
+  },
+  "workspaces": [
+    "artifacts/*"
+  ],
+  "private": true,
+  "overrides": {
+    "lodash": ">=4.17.21",
+    "ws": ">=8.20.1",
+    "qs": ">=6.15.2",
+    "axios": ">=1.21.1",
+    "postcss-selector-parser": "^6.1.6",
+    "valibot": ">=1.5.0",
+    "react-is": "^19.0.0",
+    "@reown/appkit": "2.0.0",
+    "@reown/appkit-common": "2.0.0",
+    "@reown/appkit-controllers": "2.0.0",
+    "@reown/appkit-pay": "2.0.0",
+    "@reown/appkit-polyfills": "2.0.0",
+    "@reown/appkit-scaffold-ui": "2.0.0",
+    "@reown/appkit-ui": "2.0.0",
+    "@reown/appkit-utils": "2.0.0",
+    "@reown/appkit-wallet": "2.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.10.1",
+    "typescript": "^5.9.3"
+  }
+}
